@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Super Fresh</title>
+
+<style>
+*{box-sizing:border-box;font-family:"Segoe UI",Tahoma}
+body{margin:0;background:#fff;color:#222}
+
+/* ====== BANNER ====== */
+.banner{
+  background:#0b3c5d;
+  color:white;
+  padding:80px 20px;
+  text-align:center;
+}
+.banner h1{
+  font-size:48px;
+  margin:0;
+  color:#6ec1ff;
+  letter-spacing:2px;
+}
+.banner .by{
+  font-size:16px;
+  margin-top:10px;
+  text-align:right;
+  max-width:600px;
+  margin-inline:auto;
+}
+.banner p{
+  margin-top:25px;
+  font-size:18px;
+  opacity:.9;
+}
+
+/* ====== SECTIONS BOXES ====== */
+.sections{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:20px;
+  padding:40px;
+}
+.box{
+  padding:50px 10px;
+  text-align:center;
+  font-size:22px;
+  font-weight:bold;
+  border-radius:14px;
+  cursor:pointer;
+  transition:.3s;
+}
+.box:hover{transform:scale(1.05)}
+.drinks{background:#bfe9ff}
+.ice{background:#fff4d6}
+.dairy{background:#fff1a8}
+.bakery{background:#d7b38c}
+
+/* ====== PRODUCTS ====== */
+.products{
+  display:none;
+  padding:30px;
+}
+.products h2{text-align:center;margin-bottom:20px}
+.product{
+  background:#f5f5f5;
+  padding:12px;
+  margin:8px 0;
+  border-radius:8px;
+  display:flex;
+  justify-content:space-between;
+}
+.product button{
+  background:#0b3c5d;
+  color:white;
+  border:none;
+  padding:6px 12px;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+/* ====== CART ====== */
+.cart{
+  background:#f0f0f0;
+  padding:20px;
+  margin:30px;
+  border-radius:12px;
+}
+.cart h3{text-align:center}
+.cart ul{list-style:none;padding:0}
+
+/* ====== FORM ====== */
+form input, form textarea{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+}
+form button{
+  background:#0b3c5d;
+  color:white;
+  border:none;
+  padding:12px;
+  width:100%;
+  font-size:16px;
+}
+
+/* ====== FOOTER ====== */
+footer{
+  background:#0b3c5d;
+  color:white;
+  text-align:center;
+  padding:20px;
+  margin-top:40px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== BANNER ===== -->
+<div class="banner">
+  <h1>SUPER FRESH</h1>
+  <div class="by">by mhmd js</div>
+  <p>نضارة يومية • جودة مضمونة • اختيارك الأفضل</p>
+</div>
+
+<!-- ===== SECTION BOXES ===== -->
+<div class="sections">
+  <div class="box drinks" onclick="showProducts('مشروبات')">مشروبات</div>
+  <div class="box ice" onclick="showProducts('مثلجات')">مثلجات</div>
+  <div class="box dairy" onclick="showProducts('أجبان و ألبان')">أجبان و ألبان</div>
+  <div class="box bakery" onclick="showProducts('مخبوزات')">مخبوزات</div>
+</div>
+
+<!-- ===== PRODUCTS ===== -->
+<div class="products" id="products">
+  <h2 id="productTitle"></h2>
+  <div id="productList"></div>
+</div>
+
+<!-- ===== CART ===== -->
+<div class="cart">
+  <h3>🛒 السلة</h3>
+  <ul id="cartList"></ul>
+</div>
+
+<!-- ===== FORM ===== -->
+<form onsubmit="sendWhatsApp(event)">
+  <input required placeholder="الاسم الكامل" id="name">
+  <input required placeholder="رقم الهاتف" id="phone">
+  <textarea required placeholder="العنوان بالتفصيل" id="address"></textarea>
+  <button>تأكيد الطلب عبر واتساب</button>
+</form>
+
+<footer>
+  by Mohamad Jassem <br>
+  71470782
+</footer>
+
+<script>
+const productsData={
+  "مشروبات":20,
+  "مثلجات":20,
+  "أجبان و ألبان":20,
+  "مخبوزات":20
+};
+
+let cart=[];
+
+function showProducts(section){
+  document.getElementById("products").style.display="block";
+  document.getElementById("productTitle").innerText=section;
+  let list=document.getElementById("productList");
+  list.innerHTML="";
+  for(let i=1;i<=productsData[section];i++){
+    list.innerHTML+=`
+      <div class="product">
+        <span>${section} ${i}</span>
+        <button onclick="addToCart('${section} ${i}')">إضافة</button>
+      </div>`;
+  }
+}
+
+function addToCart(item){
+  cart.push(item);
+  let ul=document.getElementById("cartList");
+  ul.innerHTML="";
+  cart.forEach(i=>ul.innerHTML+=`<li>${i}</li>`);
+}
+
+function sendWhatsApp(e){
+  e.preventDefault();
+  let msg=
+`طلب جديد:
+الاسم: ${name.value}
+الرقم: ${phone.value}
+العنوان: ${address.value}
+الطلب:
+${cart.join(", ")}`;
+  let url=`https://wa.me/96171470782?text=${encodeURIComponent(msg)}`;
+  window.open(url,"_blank");
+}
+</script>
+
+</body>
+</html>
